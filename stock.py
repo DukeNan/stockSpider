@@ -1,7 +1,9 @@
-import tushare as ts
-from clients import clients
 import time
 from datetime import datetime
+
+import tushare as ts
+
+from clients import clients
 from settings import API_TOKEN
 
 
