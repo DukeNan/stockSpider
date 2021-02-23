@@ -1,0 +1,26 @@
+
+name: Start Crawling
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+
+
+jobs:
+  my-job:
+    - name: Pull images
+    runs-on: ubuntu-latest
+    steps:
+    - name: Start execution
+      with:
+        python-version: 3.8.6
+      env:
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PWD: ${{ secrets.DB_PWD }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python3 stock.py
