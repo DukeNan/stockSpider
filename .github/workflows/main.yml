@@ -8,8 +8,8 @@ on:
 
 jobs:
   my-job:
-    - name: Pull images
     runs-on: ubuntu-latest
+
     steps:
     - name: Start execution
       with:
