@@ -1,0 +1,13 @@
+*.pyc
+*.swp
+/tags
+/.venv
+/.env
+.vscode/
+# jetbrains config
+/.idea
+.DS_Store
+.ropeproject
+/logs
+
+demo.py
