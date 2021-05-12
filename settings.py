@@ -5,6 +5,7 @@ DB_HOST = os.getenv('DB_HOST', '127.0.0.1')
 DB_USER = os.getenv('DB_USER', 'root')
 DB_PWD = os.getenv('DB_PWD', 'root')
 DB_PORT = os.getenv('DB_PORT', 3306)
+PRODUCT = True
 
 MYSQL_DB = f'mysql+pymysql://{DB_USER}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4'
 

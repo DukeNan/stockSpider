@@ -1,10 +1,12 @@
+import json
 import time
 from datetime import datetime
+from pathlib import Path
 
 import tushare as ts
 
 from clients import clients
-from settings import API_TOKEN
+from settings import API_TOKEN, PRODUCT
 
 
 def get_ts_code_list(items, num=5):
@@ -86,6 +88,26 @@ class StockSpider:
                 print('------------更新进度：{:.2f}%------------------'.format((index + 1) / total * 100))
 
 
+def update_time(is_product=PRODUCT):
+    if not is_product:
+        return 'No changes'
+    path = Path(__file__).resolve().parent.joinpath('update_time.json')
+    now = time.time()
+    data_json = json.dumps({'update_time': now})
+
+    if not path.exists():
+        with open(path, 'w+') as f:
+            f.write(data_json)
+        return
+    with open(path, 'r+') as f:
+        index_date = json.loads(f.read())
+        if index_date['update_time'] + 86400 * 30 < now:
+            f.seek(0)
+            f.write(data_json)
+    return 'update github'
+
+
 if __name__ == '__main__':
     spider = StockSpider()
     spider.update_stock_daily()
+    update_time()
