@@ -15,6 +15,7 @@ jobs:
       DB_PWD: ${{ secrets.DB_PWD }}
       DB_PORT: ${{ secrets.DB_PORT }}
       API_TOKEN: ${{ secrets.API_TOKEN }}
+      TZ: Asia/Shanghai
 
     steps:
       - uses: actions/checkout@v2
