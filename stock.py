@@ -89,6 +89,9 @@ class StockSpider:
 
 
 def update_time(is_product=PRODUCT):
+    """
+    代码仓库每隔三十天自动提交一次，防止GitHub actions超时自动取消
+    """
     if not is_product:
         return 'No changes'
     path = Path(__file__).resolve().parent.joinpath('update_time.json')
