@@ -95,15 +95,16 @@ def update_time(is_product=PRODUCT):
     now = time.time()
     data_json = json.dumps({'update_time': now})
 
-    if not path.exists():
-        with open(path, 'w+') as f:
-            f.write(data_json)
-        return
-    with open(path, 'r+') as f:
-        index_date = json.loads(f.read())
-        if index_date['update_time'] + 86400 * 30 < now:
-            f.seek(0)
-            f.write(data_json)
+    if path.exists():
+        with path.open() as f:
+            index_date = json.loads(f.read())
+            if index_date['update_time'] + 86400 * 30 > now:
+                return
+
+    path.unlink(missing_ok=True)
+    with path.open("w+") as f:
+        f.write(data_json)
+
     return 'update github'
 
 
