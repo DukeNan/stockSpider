@@ -28,36 +28,6 @@ class StockSpider:
         with clients.mysql_db.connect() as conn:
             df.to_sql('stock_basic', conn, if_exists='append', index=False)
 
-    def get_init_stock_daily(self, ts_code, stock_name_map):
-        df = self.pro.daily(ts_code=ts_code, start_date='20180101', end_date='20210221')
-        for ts_code, group in df.groupby('ts_code'):
-            stock = stock_name_map[ts_code]
-            group.sort_values(by='trade_date', inplace=True)
-            group['stock_id'] = ts_code.split('.')[0]
-            group['stock_name'] = stock.stock_name
-
-            info = '--------------id:{}, stock_id:{}, stock_name:{}, 百分比:{:.2f}%-----------'. \
-                format(stock.id,
-                       stock.stock_id,
-                       stock.stock_name,
-                       (stock.id / 4179) * 100)
-            print(info)
-
-            group.to_sql('stock_daily', self.conn, if_exists='append', index=False)
-
-    def init_stock_daily(self):
-        with clients.mysql_db.connect() as conn:
-            self.conn = conn
-            stock_list = self.conn.execute(
-                'select id, ts_code, stock_id, stock_name from stock_basic where id >=3608 order by stock_id').fetchall()
-            stock_name_map = {item.ts_code: item for item in stock_list}
-
-            ts_code_list = get_ts_code_list(stock_list)
-            for items in ts_code_list:
-                ts_code = ','.join(entity.ts_code for entity in items)
-                self.get_init_stock_daily(ts_code, stock_name_map)
-                time.sleep(5)
-
     def get_stock_daily(self, ts_code, trade_date, stock_name_map):
         df = self.pro.daily(ts_code=ts_code, trade_date=trade_date)
         if df.empty:
@@ -81,7 +51,7 @@ class StockSpider:
                 if df.empty:
                     continue
                 try:
-                    df.to_sql('stock_daily', self.conn, if_exists='append', index=False)
+                    df.to_sql('stock_daily_history', self.conn, if_exists='append', index=False)
                 except Exception as e:
                     # print(e)
                     continue
