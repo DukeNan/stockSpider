@@ -9,7 +9,7 @@ home=$(dirname $(cd $(dirname $0);pwd))
 ts=`date +%Y%m%d`
 
 
-file="update_stock_basic.py"
+file="update_industry.py"
 
 log_file=$home/log/${file}.${ts}.log
 
