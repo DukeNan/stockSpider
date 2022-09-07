@@ -51,7 +51,7 @@ class UpdateDbServer(object):
         self.db_conn.execute(text(sql), data)
 
     def get_df(self, ts_code, start_date='20220801', end_date='20220812') -> pd.DataFrame:
-        df = ts.pro_bar(ts_code=ts_code, start_date=start_date, end_date=end_date, ma=[5, 10, 20])
+        df = ts.pro_bar(ts_code=ts_code,api=self.ts_pro, start_date=start_date, end_date=end_date, ma=[5, 10, 20])
         df.rename(columns={'ma5': 'ma_5', 'ma10': 'ma_10', 'ma20': 'ma_20'}, inplace=True)
         df["stock_id"] = df["ts_code"].apply(lambda x: x.split('.')[0])
         df.drop(["ma_v_5", "ma_v_10", "ma_v_20"], axis=1, inplace=True)
