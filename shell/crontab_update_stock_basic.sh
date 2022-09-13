@@ -11,7 +11,7 @@ ts=`date +%Y%m%d`
 
 file="update_stock_basic.py"
 
-log_file=$home/log/${file}.${ts}.log
+log_file=$home/logs/${file}.${ts}.log
 
 
 
