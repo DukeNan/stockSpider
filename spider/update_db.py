@@ -80,7 +80,8 @@ class UpdateDbServer(object):
 
     def update_stock_daily(self, today):
         """更新当天的stock_daily"""
-        if self.db_conn(text("select count(1) from stock_daily_history where trade_date =:trade_date")).scalar() == 0:
+        if self.db_conn.execute(text("select count(1) from stock_daily_history where trade_date =:trade_date"),
+                        trade_date=today).scalar() == 0:
             return
         sql = text("select 1 from stock_daily where trade_date =:trade_date limit 1")
         if self.db_conn.execute(sql, trade_date=today).scalar():
@@ -110,7 +111,7 @@ class UpdateDbServer(object):
 
     def run(self):
         today = datetime.now().date()
-        # today = datetime(2022, 9, 6).date()
+        # today = datetime(2022, 9, 14).date()
         self.db_init()
         self.update_stock_daily(today)
         self.update_ma()

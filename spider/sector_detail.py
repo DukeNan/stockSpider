@@ -4,6 +4,9 @@
 # @GitHub  : https://github.com/DukeNan
 # 板块详情 (启明星暂无详情数据)
 # 接口数据较为完备，后期考虑拓展
+import sys
+
+sys.path.append("..")
 import time
 
 import akshare as ak
@@ -52,5 +55,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-
-
