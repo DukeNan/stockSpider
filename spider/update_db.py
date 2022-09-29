@@ -86,6 +86,9 @@ class UpdateDbServer(object):
         sql = text("select 1 from stock_daily where trade_date =:trade_date limit 1")
         if self.db_conn.execute(sql, trade_date=today).scalar():
             return
+        last_day = today - timedelta(days=1)
+        total = self.db_conn.execute(text("select count(1) from stock_daily_history where trade_date =:trade_date"),
+                        trade_date=last_day).scalar()
         # 清空表数据
         self.db_conn.execute("truncate stock_daily")
         num = 0
@@ -95,7 +98,7 @@ class UpdateDbServer(object):
             df = self.get_df(ts_code, start_date, end_date)
             df = df[df["trade_date"] == today.strftime('%Y%m%d')]
             df.to_sql("stock_daily", self.db_conn, if_exists="append", index=False)
-            process = min(10000 * num / 4667, 100)
+            process = min(10000 * total / 4667, 100)
             logger.info(f"=======进度：{process:.2f}%=========")
             time.sleep(5)
         # 跟新字段stock_name
